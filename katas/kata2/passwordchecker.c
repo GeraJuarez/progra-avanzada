@@ -91,7 +91,7 @@ int strongPasswordChecker(char* s) {
         }
         else if (rule3Faults)
         {
-            rule3Faults;
+            changes = rule3Faults;
         }
     }
     else if (size < 6)
