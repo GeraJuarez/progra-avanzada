@@ -42,6 +42,7 @@ int main()
     long Ai = 0;
     int c;
     Array results;
+    results.data = NULL;
     
     do
     {
