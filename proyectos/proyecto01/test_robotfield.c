@@ -16,14 +16,56 @@
 int testsRun = 0;
 
 static char* testCreateBoolExp() {
+    char* boolExpression;
+    char stringExp[] = "NOT((A OR NOT B) AND (A OR B)) OR NOT (A AND NOT B OR TRUE)";
+    char result[] = "-((A+-B)*(A+B))+-(A*-B+1)";
 
-    muAssert("test error", 1 == 1);
+    createBoolExpression(stringExp, &boolExpression);
+    muAssert("test error", strcmp( result, boolExpression ) == 0);
+
+    return 0;
+}
+
+static char* testEvaluateBoolExp() {
+    int regs[26] = {0};
+
+    char stringExp[] = "A+B";
+    int expected = 0;
+    int result = evaluateBoolExpression(stringExp, regs);
+    muAssert("Error at evaluating expression", result == expected);
+
+    char stringExp2[] = "A*-B";
+    expected = 0;
+    result = evaluateBoolExpression(stringExp2, regs);
+    muAssert("Error at evaluating expression 2", result == expected);
+
+    char stringExp3[] = "-A+-B*C";
+    expected = 1;
+    result = evaluateBoolExpression(stringExp3, regs);
+    muAssert("Error at evaluating expression 3", result == expected);
+
+    char stringExp4[] = "(A+-B)*(A+B)";
+    expected = 0;
+    result = evaluateBoolExpression(stringExp4, regs);
+    muAssert("Error at evaluating expression 4", result == expected);
+
+    char stringExp5[] = "-(A+1)*(0+B)+1";
+    expected = 1;
+    result = evaluateBoolExpression(stringExp5, regs);
+    printf("%d\n", result);
+    muAssert("Error at evaluating expression 5", result == expected);
+
+    char stringExp6[] = "-((A+-B)*(A+B))+-(A*-B+1)";
+    expected = 1;
+    result = evaluateBoolExpression(stringExp6, regs);
+    muAssert("Error at evaluating expression 6", result == expected);
 
     return 0;
 }
 
 static char* allTests() {
     muRunTest(testCreateBoolExp);
+    muRunTest(testEvaluateBoolExp);
 
     return 0;
 }
