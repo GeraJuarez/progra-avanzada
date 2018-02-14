@@ -64,7 +64,7 @@ You should print robot's route to output, every pair of coordinates in separate 
    * `FALSE`: `0`
 4. Read `N`, `M` and `K`.
 5. Initialize a struct for the robot with its default values and an array of booleans that represents the registers:
-    * The size of the array of register is 25 (`A...Z`).
+    * The size of the array of register is 26 (`A...Z`).
     * Normalize the asci value substracting 65 to the characters (`'A' - 65 = 0`).
     * `A` represent index `0` of the array, `Z` represent index `24`.
     * The robot can only face North (`N`), East (`E`), South (`S`) or West (`W`).
