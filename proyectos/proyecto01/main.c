@@ -5,9 +5,9 @@
 
 #define BOOLEXPR_SIZE 250
 
-int main()
+void solution1()
 {
-    char booleanExpression[BOOLEXPR_SIZE];
+        char booleanExpression[BOOLEXPR_SIZE];
     int N = 0;      // field size
     int M = 0;      // number of forks
     int K = 0;      // number of register inverting points
@@ -61,6 +61,7 @@ int main()
                 {
                     exprResult = evaluateBoolExpression(parsedBoolExpr, robot.registers);
                     changeDirection(&robot, exprResult);
+                    break;
                 }
             }
         }
@@ -73,12 +74,18 @@ int main()
                 if (robot.y == Ky[i])
                 {
                     changeRegister(&robot, Kc[i]);
+                    break;
                 }
             }
         }
         moveForward(&robot);
 
     } while (robot.x <= 1 && robot.y <= 1);
+}
+
+int main()
+{
+    solution1();
 
     return 0;
 }
