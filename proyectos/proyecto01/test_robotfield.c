@@ -2,6 +2,7 @@
 #include <string.h>
 #include "minunit.h"
 #include "booleanparser.h"
+#include "robot_field.h"
 
 #define KNRM  "\x1B[0m"
 #define KRED  "\x1B[31m"
@@ -52,7 +53,6 @@ static char* testEvaluateBoolExp() {
     char stringExp5[] = "-(A+1)*(0+B)+1";
     expected = 1;
     result = evaluateBoolExpression(stringExp5, regs);
-    printf("%d\n", result);
     muAssert("Error at evaluating expression 5", result == expected);
 
     char stringExp6[] = "-((A+-B)*(A+B))+-(A*-B+1)";
@@ -63,9 +63,73 @@ static char* testEvaluateBoolExp() {
     return 0;
 }
 
+static char* testInitRobot() {
+    Robot robot;
+    initRobot(&robot);
+    muAssert("Error robot positionX initialization", robot.x == 0);
+    muAssert("Error robot positionY initialization", robot.y == 0);
+    muAssert("Error robot positionY initialization", robot.facing == 'E');
+    for (int i = 0; i < 26; i++)
+    {
+        muAssert("Error robot registers initialization", robot.registers[i] == 0);
+    }
+
+    return 0;
+}
+
+static char* testChangeRobotDirection() {
+    int boolResult;
+    Robot robot;
+    initRobot(&robot);
+
+    boolResult = 1;
+    changeDirection(&robot, boolResult);
+    muAssert("Error robot change of direction 1", robot.facing == 'S');
+    
+    boolResult = 0;
+    changeDirection(&robot, boolResult);
+    muAssert("Error robot change of direction 2", robot.facing == 'E');
+
+    return 0;
+}
+
+static char* testChangeRobotRegister() {
+    Robot robot;
+    initRobot(&robot);
+
+    changeRegister(&robot, 'A');
+    int A = 'A' - 65;
+    muAssert("Error robot change register 1", robot.registers[A]);
+
+    changeRegister(&robot, 'A');
+    muAssert("Error robot change register 2", !robot.registers[A]);
+
+    changeRegister(&robot, 'Z');
+    int Z = 'Z' - 65;
+    muAssert("Error robot change register 3", robot.registers[Z]);
+
+    return 0;
+}
+
+static char* testMoveForward() {
+    Robot robot;
+    initRobot(&robot);
+
+    moveForward(&robot);
+
+    muAssert("Error robot move forward x", robot.x == 1);
+    muAssert("Error robot move forward y", robot.y == 0);
+
+    return 0;
+}
+
 static char* allTests() {
     muRunTest(testCreateBoolExp);
     muRunTest(testEvaluateBoolExp);
+    muRunTest(testInitRobot);
+    muRunTest(testChangeRobotDirection);
+    muRunTest(testChangeRobotRegister);
+    muRunTest(testMoveForward);
 
     return 0;
 }
