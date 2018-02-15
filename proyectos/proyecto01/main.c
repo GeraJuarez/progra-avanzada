@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "booleanparser.h"
 #include "robot_field.h"
 
@@ -7,7 +8,7 @@
 
 void solution1()
 {
-        char booleanExpression[BOOLEXPR_SIZE];
+    char booleanExpression[BOOLEXPR_SIZE];
     int N = 0;      // field size
     int M = 0;      // number of forks
     int K = 0;      // number of register inverting points
@@ -83,9 +84,77 @@ void solution1()
     } while (robot.x <= 1 && robot.y <= 1);
 }
 
+void solution2()
+{
+    char booleanExpression[BOOLEXPR_SIZE];
+    int N = 0;      // field size
+    int M = 0;      // number of forks
+    int K = 0;      // number of register inverting points
+
+    char** field;   // Field representation
+
+    // Read input
+    scanf("%[^\n]s", booleanExpression);
+    scanf("%d %d %d", &N, &M, &K);
+
+    // Init field
+    field = (char**) calloc((N * 2) + 1, sizeof(char*));
+    for (int i = 0; i < (N * 2) + 1; i++)
+    {
+        field[i] = (char*) calloc((N * 2) + 1, sizeof(char));
+    }
+
+    // Read Forks positions
+    int xPos, yPos;
+    char reg;
+    for (int i = 0; i < M; i++)
+    {
+        scanf("%d %d", &xPos, &yPos);
+        field[xPos + N][yPos + N] = '1';
+    }
+
+    // Read Register inverting points
+    for (int i = 0; i < K; i++)
+    {
+        scanf("%d %d %c", &xPos, &yPos, &reg);
+        field[xPos + N][yPos + N] = reg;
+    }
+
+    // Init robot values and parsed bool expression
+    char* parsedBoolExpr;
+    createBoolExpression(booleanExpression, &parsedBoolExpr);
+    Robot robot;
+    initRobot(&robot);
+    int exprResult = 0;
+    char currentPos;
+
+    do
+    {
+        printf("%d %d\n", robot.x, robot.y);
+        currentPos = field[robot.x + N][robot.y + N];
+        if (currentPos)
+        {
+            if (currentPos == '1')
+            // Fork found
+            {
+                exprResult = evaluateBoolExpression(parsedBoolExpr, robot.registers);
+                changeDirection(&robot, exprResult);
+            }
+            else
+            // Register inverting point found
+            {
+                changeRegister(&robot, currentPos);
+            }
+        }
+        moveForward(&robot);
+
+    } while (robot.x <= 1 && robot.y <= 1);
+}
+
 int main()
 {
-    solution1();
+    //solution1();
+    solution2();
 
     return 0;
 }
