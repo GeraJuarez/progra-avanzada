@@ -32,7 +32,7 @@ static char * testHashInsert() {
 
   hashInsert(&hash, "cuarenta", 40);
   hashInsert(&hash, "cincuenta", 50);
-
+  
   muAssert("error, hash key incorrect", strcmp( hash.data[0].elements[0].key, "cuarenta" ) == 0);
   muAssert("error, hash key incorrect", strcmp( hash.data[0].elements[1].key, "cincuenta" ) == 0);
   muAssert("error, hash value 40", hash.data[0].elements[0].value == 40);
@@ -41,9 +41,41 @@ static char * testHashInsert() {
   return 0;
 }
 
+static char * testHashGet() {
+  int sizeHash = 1;
+  int* value;
+  int* noValue;
+  HashInt hash;
+  hashInit(&hash, sizeHash);
+  hashInsert(&hash, "cuarenta", 40);
+  hashInsert(&hash, "cincuenta", 50);
+
+  value = hashGet(&hash, "cincuenta");
+  noValue = hashGet(&hash, "cien");
+
+  muAssert("error, value must be 50", *value == 50); // Compare data of pointer
+  muAssert("error, value must be 50", noValue == NULL); // Compare the pointer
+  return 0;
+}
+
+static char * testHashUpsert() {
+  unsigned sizeHash = 1;
+  HashInt hash;
+  hashInit(&hash, sizeHash);
+
+  hashInsert(&hash, "cuarenta", 40);
+  hashInsert(&hash, "cuarenta", 80);
+  
+  muAssert("error, hash key val 40", strcmp( hash.data[0].elements[0].key, "cuarenta" ) == 0);
+  muAssert("error, hash key value 80", hash.data[0].elements[0].value == 80);
+  return 0;
+}
+
 static char * allTests() {
   muRunTest(testHashInit);
   muRunTest(testHashInsert);
+  muRunTest(testHashGet);
+  muRunTest(testHashUpsert);
 
   return 0;
 }
