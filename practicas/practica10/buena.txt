@@ -1,0 +1,27 @@
+#include <stdio.h>
+
+int main () {
+    // stdin: standard input, in this case, the keyboard
+    // stdout: standard output, in this case, the console
+    // stderr: standard output2, same with stdout
+    /* 2> is the stdoutput 2, aka stderr */
+    /* 1> is the stdoutput 1, aka stdout */
+    
+    // gcc input.c | ./input.exe 2> archivo.txt
+
+    int character;
+
+    while (1) 
+    {
+        character = fgetc(stdin);
+
+        if (feof(stdin))
+        {
+            break;
+        }
+        fputc(character, stdout);
+        fprintf(stderr, " character = %c\n", character);
+    }
+
+    return 0;
+}
