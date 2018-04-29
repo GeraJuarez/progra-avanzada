@@ -3,6 +3,7 @@
 #include "forbidden_sum.h"
 
 int maximum(int * array, int size)
+// Find the max number of an array
 {
 	int curr = 0;
 	int max = 0;
@@ -18,6 +19,7 @@ int maximum(int * array, int size)
 }
 
 void countingSort(int* array, int size)
+// A regular counting sort
 {
 	int curr = 0;
 	int max = maximum(array, size);
@@ -57,6 +59,7 @@ void swap(int *x,int *y)
 }
 
 void quicksort(int list[],int m,int n, int* indexArray)
+// Custom quick sort in which also swaps the original index into another array
 {
     int key,i,j,k;
     if( m < n)
@@ -112,9 +115,11 @@ int getForbiddenSum_sol2(int* array, int sizeN, int L, int R, int* indexArr)
     int forbiddenSum = 0;
     int rangeSize = R - L + 1;
     int j = 0;
+
     for (int i = 0; i < sizeN; i++)
     {
         if (indexArr[i] <= R - 1 && indexArr[i] >= L - 1)
+        // An index is found whitn L and R range
         {
             if (array[i] <= forbiddenSum + 1)
             {
@@ -123,6 +128,7 @@ int getForbiddenSum_sol2(int* array, int sizeN, int L, int R, int* indexArr)
             }
             else break;
         }
+        
         if (!(j < rangeSize))
         {
             break;
