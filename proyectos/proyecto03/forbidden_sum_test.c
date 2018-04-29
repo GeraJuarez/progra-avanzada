@@ -16,22 +16,7 @@
 
 int testsRun = 0;
 
-int compare (const void * a, const void * b)
-// Used to compare usign the quick sort
-{
-    if ( *(int*)a > *(int*)b )
-	{
-		return 1;
-	}
-    else if ( *(int*)a < *(int*)b )
-	{
-		return -1;
-	}
-    else 
-		return 0;
-}
-
-static char* forbiddenSum() {
+static char* forbiddenSumtest() {
 	int size, result, expected;
 
 	int a[] = {1, 1, 3, 7};
@@ -53,7 +38,7 @@ static char* forbiddenSum() {
 }
 
 
-static char* arraySubset() {
+static char* arraySubsettest() {
 	int* x;
 	int size, L, R;
 	x = (int*) malloc(10 * sizeof(int));
@@ -80,7 +65,7 @@ static char* arraySubset() {
 	return 0;
 }
 
-static char* sortRangeArray()
+static char* sortRangeArraytest()
 {
 	int* x;
 	int size, L, R;
@@ -93,7 +78,7 @@ static char* sortRangeArray()
 	L = 1;
 	R = 2;
 	memcpy(x, a + L - 1, sizeof(int) * (R - L + 1));
-	qsort(x, R - L + 1, sizeof(int), compare);
+	countingSort(x, R - L + 1);
 
 	muAssert("error, Array sort 1.0", x[0] == 3);
 	muAssert("error, Array sort 1.1", x[1] == 10);
@@ -102,7 +87,7 @@ static char* sortRangeArray()
 	L = 3;
 	R = 5;
 	memcpy(x, a + L - 1, sizeof(int) * (R - L + 1));
-	qsort(x, R - L + 1, sizeof(int), compare);
+	countingSort(x, R - L + 1);
 
 	muAssert("error, Array sort 2.0", x[0] == 4);
 	muAssert("error, Array sort 2.1", x[1] == 5);
@@ -110,10 +95,61 @@ static char* sortRangeArray()
 	return 0;
 }
 
+static char* countingSorttest()
+{
+	int a[] = {10, 3, 4, 9, 5};
+	int b[] = {0, 1, 2, 3, 4};
+	int size = sizeof(a) / sizeof(int);
+
+	quicksort(a, 0, size - 1, b);
+
+	for (int i = 0; i < size; i++)
+	{
+		printf("A[%d]: %d\n", i, a[i]);
+	}
+	for (int i = 0; i < size; i++)
+	{
+		printf("b[%d]: %d\n", i, b[i]);
+	}
+
+	muAssert("error, Array sort 3.0", 1 == 1);
+
+	return 0;
+}
+
+
+static char* forbiddenSum2test() {
+	int size, result, expected;
+
+	int a[] = {1, 1, 3, 7};
+	int a1[] = {0, 1, 2, 3};
+	expected = 6;
+	size = sizeof(a) / sizeof(int);
+
+	result = getForbiddenSum_sol2(a, size, 1, 4, a1);
+
+
+	for (int i = 0; i < size; i++)
+	{
+		printf("A[%d]: %d\n", i, a[i]);
+	}
+	for (int i = 0; i < size; i++)
+	{
+		printf("b[%d]: %d\n", i, a1[i]);
+	}
+	printf("Res = %d\n", result);
+
+  	muAssert("error, Forbidden sum solution 2", expected == result);
+	  return 0;
+}
+
+
 static char* allTests() {
-  	muRunTest(forbiddenSum);
-	muRunTest(arraySubset);
-	muRunTest(sortRangeArray);
+  	muRunTest(forbiddenSumtest);
+	muRunTest(arraySubsettest);
+	muRunTest(sortRangeArraytest);
+	muRunTest(countingSorttest);
+	muRunTest(forbiddenSum2test);
 
   	return 0;
 }

@@ -37,10 +37,22 @@ Output should consists of `M` lines. The `i`'th line should contains the answer 
 
 ## Solution
 
-Using memcpy is enough to copy part of an array into another one within a rnage. Then, to calculate the *forbidden sum* we must first sort the array in non-decreasing order. The lowest non negative number is 0, so in the base case in which a set is empty the forbidden sum equals 1. 
+### Solution 1
+
+Using memcpy is enough to copy part of an array into another one within a rnage. Then, to calculate the *forbidden sum* we must first sort the array in non-decreasing order. The lowest non negative number is 0, so in the base case in which a set is empty the forbidden sum equals 1.
 
 To find this sum, it is needed to keep summing the minimum values until the next element is greater than the current sum plus one. This works because the sum of the minimum numbers keeps track of the lower limit of the forbidden sum we want to find; and, once we find a number greater than the current sum plus one, the upper bound is found, hence, the forbidden sum is also found. This is true because this number as the upper bound is greater than the forbidden sum and with the current sum we had of minimum numbers ensures that it cannot create the forbidden sum.
 
+### Solution 2
+
+It uses the same idea of solution 1, but this time, the original array is sorted while storing its original index of the original array. Then, for each `L` and `R`, calculate the forbidden sum using the array of indices and the sorted array `A`. To do this, iterate over the index array and every time an index is found within the range of `L` and `R`, get the number of the current index and use it to calculate the forbidden sum (same as for solution 1).
+
 ## Analysis
 
-There is a loop for `M` to start solving the 'questions'; for every `M`, a subset of `A` is created, sorted and then the forbidden sum is calculated. Worst case scenario, the subset is `N`, this means a complexity of `N lg N` when sorting, `N` to find the forbidden sum and when generating the subset. We have a total time complexity inside the `M` loop of `2N + N lg N`; which means `O(MN lg N)`
+### Analysis sol 1
+
+There is a loop for `M` to start solving the 'questions'; for every `M`, a subset of `A` is created, sorted and then the forbidden sum is calculated. Worst case scenario, the subset is `N`, this means a complexity of `N lg N` when sorting, `N` to find the forbidden sum and when generating the subset. We have a total time complexity inside the `M` loop of `2N + N lg N`; which means `O(N + MN lg N)`.
+
+### Analysis sol 2
+
+Sorting is `N log N` and for every `M`, the array `A` is iterated once to get the forbidden sum. Total time complexity is `O(N lgN + MN)`.
